@@ -4,7 +4,7 @@ metadata:
   name: dashboard
   namespace: dashboard
 spec:
-  replicas: 6
+  replicas: 1
   selector:
     matchLabels:
       app: dashboard
