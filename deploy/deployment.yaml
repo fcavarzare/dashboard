@@ -15,6 +15,6 @@ spec:
     spec:
       containers:
         - name: dashboard
-          image: fcavarzare/dashboard:latest
+          image: fcavarzare/dashboard-k8s:1.0
           ports:
             - containerPort: 80
