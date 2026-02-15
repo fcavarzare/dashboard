@@ -43,7 +43,7 @@ jobs:
       - name: Update deployment image
         run: |
           set -e
-          sed -i "s|image: .*|image: ${{ env.IMAGE_NAME }}:${{ github.sha }}|g" deploy/deployment.yaml
+          sed -i "s|image: .*|image: ${{ env.IMAGE_NAME }}:${{ github.sha }}|g" deploy/dev/deployment.yaml
 
       - name: Commit and push manifest
         run: |
