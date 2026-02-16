@@ -11,7 +11,7 @@ spec:
     path: deploy/qa
   destination:
     server: https://kubernetes.default.svc
-    namespace: dashboard/qa
+    namespace: dashboard-qa
   syncPolicy:
     automated:
       prune: true
