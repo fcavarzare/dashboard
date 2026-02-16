@@ -1,0 +1,36 @@
+name: promote-to-qa
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Image tag (commit SHA) to promote to QA"
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+env:
+  IMAGE_NAME: fcavarzare/dashboard-k8s
+
+jobs:
+  promote:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Update QA deployment image
+        run: |
+          set -e
+          FILE="deploy/qa/deployment.yaml"
+          sed -i "s|image: .*|image: ${{ env.IMAGE_NAME }}:${{ inputs.tag }}|g" "$FILE"
+
+      - name: Commit & push QA promotion
+        run: |
+          set -e
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add deploy/qa/deployment.yaml
+          git commit -m "chore(qa): promote image to ${{ inputs.tag }}" || exit 0
+          git push
