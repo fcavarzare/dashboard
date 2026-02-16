@@ -4,10 +4,11 @@ metadata:
   name: dashboard
   namespace: dashboard-qa
 spec:
-  type: NodePort
+  type: ClusterIP
   selector:
     app: dashboard
   ports:
-    - port: 8080
+    - name: http
+      port: 8080
       targetPort: 8080
-      nodePort: 30081
+      
