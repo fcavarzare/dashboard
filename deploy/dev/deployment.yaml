@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: dashboard
-          image: fcavarzare/dashboard-k8s:fcb86ff3184a3098c66a9d9749816ceecd51a860
+          image: fcavarzare/dashboard-k8s:ee33de93fd346d3454370b05c9bd5c66d590b321
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
