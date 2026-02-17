@@ -13,7 +13,7 @@ env:
   IMAGE_NAME: fcavarzare/dashboard-k8s
 
 jobs:
-  pr_qa_manifest:
+  pr_qa:
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     steps:
@@ -22,13 +22,13 @@ jobs:
         with:
           ref: main
 
-      - name: Update QA image in manifest
+      - name: Update QA deployment image (auto SHA)
         run: |
           set -e
           SHA="${{ github.event.workflow_run.head_sha }}"
           sed -i "s|image: .*|image: ${{ env.IMAGE_NAME }}:${SHA}|g" deploy/qa/deployment.yaml
 
-      - name: Create Pull Request for QA
+      - name: Create PR for QA
         uses: peter-evans/create-pull-request@v6
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -36,8 +36,8 @@ jobs:
           title: "chore(qa): promote image ${{ github.event.workflow_run.head_sha }}"
           commit-message: "chore(qa): update image to ${{ github.event.workflow_run.head_sha }}"
           body: |
-            Promove QA para:
-            - ${{ env.IMAGE_NAME }}:${{ github.event.workflow_run.head_sha }}
+            Promoção automática para QA.
+            Imagem: ${{ env.IMAGE_NAME }}:${{ github.event.workflow_run.head_sha }}
           base: main
           add-paths: |
             deploy/qa/deployment.yaml

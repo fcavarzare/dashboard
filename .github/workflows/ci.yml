@@ -1,12 +1,11 @@
-name: ci-dashboard-build
+name: ci-dashboard
 
 on:
   push:
     branches: ["main"]
     paths:
       - "src/**"
-      - "Dockerfile"
-      - ".github/workflows/ci.yml"
+      - ".github/workflows/**"
 
 permissions:
   contents: read
@@ -15,7 +14,7 @@ env:
   IMAGE_NAME: fcavarzare/dashboard-k8s
 
 jobs:
-  build_and_push:
+  build_push:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
