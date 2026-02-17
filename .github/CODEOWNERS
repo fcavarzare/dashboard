@@ -1,6 +1,2 @@
-# Infra e Pipeline
-/.github/workflows/   @fcavarzare
 /deploy/              @fcavarzare
-
-# Código
-/src/                 @fcavarzare
+/deploy/qa/           @fcavarzare

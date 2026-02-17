@@ -1,0 +1,44 @@
+name: cd-dashboard-prod
+
+on:
+  workflow_dispatch:
+    inputs:
+      image_sha:
+        description: "Git SHA da imagem (ex: 2f3a... do commit que gerou a imagem)"
+        required: true
+
+permissions:
+  contents: write
+  pull-requests: write
+
+env:
+  IMAGE_NAME: fcavarzare/dashboard-k8s
+
+jobs:
+  pr_prod_manifest:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Update PROD deployment image
+        run: |
+          set -e
+          SHA="${{ inputs.image_sha }}"
+          sed -i "s|image: .*|image: ${{ env.IMAGE_NAME }}:${SHA}|g" deploy/prod/deployment.yaml
+
+      - name: Create Pull Request for PROD
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: chore/prod-bump-${{ inputs.image_sha }}
+          title: "chore(prod): promote image ${{ inputs.image_sha }}"
+          commit-message: "chore(prod): update image to ${{ inputs.image_sha }}"
+          body: |
+            Atualiza o deploy de PROD para a imagem:
+            - ${{ env.IMAGE_NAME }}:${{ inputs.image_sha }}
+          base: main
+          add-paths: |
+            deploy/prod/deployment.yaml
